@@ -1,0 +1,110 @@
+[
+  {
+    "id": "js-event-loop",
+    "tags": ["event", "loop", "async", "callstack", "queue", "microtask", "macrotask", "concurrency"],
+    "title": "The JavaScript Event Loop",
+    "content": "JavaScript is single-threaded. The event loop processes: 1) Call Stack (synchronous code), 2) Microtask Queue (Promises, queueMicrotask), 3) Macrotask Queue (setTimeout, setInterval, I/O). Microtasks always run before the next macrotask. `console.log('a'); setTimeout(()=>console.log('b'),0); Promise.resolve().then(()=>console.log('c'))` prints a, c, b."
+  },
+  {
+    "id": "js-promises",
+    "tags": ["promise", "then", "catch", "resolve", "reject", "async", "await"],
+    "title": "Promises & Async/Await",
+    "content": "A Promise represents a future value: `new Promise((resolve, reject) => { ... })`. Chain with `.then(val => ...).catch(err => ...)`. `async/await` is syntactic sugar: `async function fetchData() { const res = await fetch(url); return res.json(); }`. Always handle rejections — unhandled promise rejections crash Node.js."
+  },
+  {
+    "id": "js-closures",
+    "tags": ["closure", "scope", "lexical", "variable", "capture", "inner", "function"],
+    "title": "Closures",
+    "content": "A closure is a function that remembers the variables from its lexical scope even when executed outside it. Example: `function counter() { let n=0; return () => ++n; }`. Classic gotcha: `for(var i=0;i<3;i++) setTimeout(()=>console.log(i),0)` logs 3,3,3. Fix with `let` (block scope) or an IIFE: `(function(i){ setTimeout(()=>console.log(i),0); })(i)`."
+  },
+  {
+    "id": "js-prototype",
+    "tags": ["prototype", "inheritance", "chain", "class", "object", "new", "oop"],
+    "title": "Prototype Chain & Inheritance",
+    "content": "Every JavaScript object has a `[[Prototype]]` link. `class` syntax is syntactic sugar over prototype-based inheritance. `class Animal { constructor(name){this.name=name} speak(){} }`. `class Dog extends Animal { speak(){ super.speak(); console.log('Woof'); } }`. Check prototype: `Object.getPrototypeOf(dog) === Dog.prototype`."
+  },
+  {
+    "id": "js-destructuring",
+    "tags": ["destructuring", "spread", "rest", "object", "array", "extract", "assign"],
+    "title": "Destructuring, Spread & Rest",
+    "content": "Array destructuring: `const [a, b, ...rest] = [1,2,3,4]`. Object destructuring: `const { name, age=18 } = person`. Rename: `const { name: fullName } = person`. Spread copies: `const newArr = [...arr, 4]`. `const merged = { ...obj1, ...obj2 }`. Rest collects remaining args: `function sum(first, ...others) {}`."
+  },
+  {
+    "id": "js-array-methods",
+    "tags": ["map", "filter", "reduce", "find", "forEach", "flat", "some", "every", "array"],
+    "title": "Array Higher-Order Methods",
+    "content": "`map` transforms: `arr.map(x => x*2)`. `filter` selects: `arr.filter(x => x>0)`. `reduce` folds: `arr.reduce((acc,x) => acc+x, 0)`. `find` returns first match: `arr.find(x => x.id===5)`. `some/every` check conditions. `flat(n)` flattens n levels. `flatMap` maps then flattens one level. Chain these for expressive pipelines."
+  },
+  {
+    "id": "js-this",
+    "tags": ["this", "bind", "call", "apply", "arrow", "context", "keyword"],
+    "title": "The `this` Keyword",
+    "content": "`this` depends on call context. In a method: `this` = the object. In a standalone function: `this` = `undefined` (strict) or `globalThis`. Arrow functions capture `this` from enclosing lexical scope — they have no own `this`. Override with `.bind(ctx)`, `.call(ctx, args)`, or `.apply(ctx, [args])`. Common mistake: passing a method as a callback loses its `this`."
+  },
+  {
+    "id": "js-modules",
+    "tags": ["import", "export", "module", "esm", "commonjs", "require", "default", "named"],
+    "title": "ES Modules vs CommonJS",
+    "content": "ESM (modern): `export const fn = () => {}` or `export default fn`. Import: `import { fn } from './mod.js'` or `import fn from './mod.js'`. CommonJS (Node): `module.exports = fn`. `const fn = require('./mod')`. ESM is static (tree-shakeable); CJS is dynamic. In Node.js use `.mjs` extension or `\"type\":\"module\"` in package.json for ESM."
+  },
+  {
+    "id": "js-error-handling",
+    "tags": ["try", "catch", "finally", "throw", "error", "promise", "rejection"],
+    "title": "Error Handling in JavaScript",
+    "content": "Synchronous: `try { riskyFn() } catch(e) { console.error(e.message) } finally { cleanup() }`. Async: `try { await fetch(url) } catch(e) { ... }` or `.catch(err => ...)`. Custom error: `class AppError extends Error { constructor(msg,code){super(msg);this.code=code} }`. Always add `process.on('unhandledRejection', ...)` in Node.js."
+  },
+  {
+    "id": "js-dom",
+    "tags": ["dom", "document", "query", "selector", "event", "listener", "html", "element"],
+    "title": "DOM Manipulation",
+    "content": "Select element: `document.querySelector('#id')` or `querySelectorAll('.class')`. Read/write: `el.textContent = 'Hello'`, `el.innerHTML`. Add class: `el.classList.add('active')`. Toggle: `el.classList.toggle('open')`. Listen: `el.addEventListener('click', handler)`. Create: `const div = document.createElement('div'); parent.appendChild(div)`. Remove: `el.remove()`."
+  },
+  {
+    "id": "js-fetch",
+    "tags": ["fetch", "http", "api", "get", "post", "json", "request", "response"],
+    "title": "Fetch API & HTTP Requests",
+    "content": "GET: `const data = await fetch('/api/users').then(r => r.json())`. POST: `fetch('/api', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) })`. Check status: `if(!res.ok) throw new Error(res.statusText)`. Use `AbortController` for timeouts: `const ctrl = new AbortController(); fetch(url, {signal: ctrl.signal})`."
+  },
+  {
+    "id": "js-localstorage",
+    "tags": ["localstorage", "sessionstorage", "storage", "persist", "browser", "cache"],
+    "title": "localStorage & sessionStorage",
+    "content": "`localStorage` persists across sessions. `sessionStorage` clears on tab close. Set: `localStorage.setItem('key', JSON.stringify(val))`. Get: `JSON.parse(localStorage.getItem('key'))`. Remove: `localStorage.removeItem('key')`. Clear all: `localStorage.clear()`. Max ~5MB per origin. Do not store sensitive data or tokens."
+  },
+  {
+    "id": "js-scope",
+    "tags": ["var", "let", "const", "scope", "hoisting", "block", "temporal"],
+    "title": "var vs let vs const & Hoisting",
+    "content": "`var` is function-scoped and hoisted (initialized to `undefined`). `let` and `const` are block-scoped and in the Temporal Dead Zone until their declaration line. `const` prevents reassignment but not mutation of objects/arrays. Always prefer `const` by default, use `let` when reassignment is needed, avoid `var`."
+  },
+  {
+    "id": "js-performance",
+    "tags": ["performance", "optimize", "memoize", "debounce", "throttle", "virtual", "dom"],
+    "title": "JavaScript Performance Tips",
+    "content": "Debounce: delay execution until after N ms of inactivity (good for search inputs). Throttle: limit execution to once per N ms (good for scroll events). Memoize: cache expensive pure function results. Avoid layout thrashing: batch DOM reads then writes. Use `requestAnimationFrame` for animations. Lazy-load heavy modules with dynamic `import()`."
+  },
+  {
+    "id": "js-regex",
+    "tags": ["regex", "regexp", "pattern", "match", "test", "replace", "string"],
+    "title": "Regular Expressions",
+    "content": "Create: `/pattern/flags` or `new RegExp('pattern', 'flags')`. Test match: `/\\d+/.test(str)`. Extract: `str.match(/\\d+/g)`. Replace: `str.replace(/foo/g, 'bar')`. Capture groups: `/(\\w+)@(\\w+)/`. Named groups: `/(?<user>\\w+)@(?<domain>\\w+)/`. Common flags: `g` (global), `i` (case-insensitive), `m` (multiline)."
+  },
+  {
+    "id": "js-react-hooks",
+    "tags": ["react", "hooks", "state", "effect", "memo", "callback", "context", "ref"],
+    "title": "React Hooks",
+    "content": "Hooks let you use state and lifecycle methods in functional components. `useState(init)` manages local state. `useEffect(() => { ... return cleanup }, [deps])` runs side-effects. `useMemo(() => val, [deps])` memoizes computed values. `useCallback(fn, [deps])` memoizes callback references. `useRef(init)` stores mutable references that don't trigger re-renders. Rules: only call hooks at the top-level, and only from React function components."
+  },
+  {
+    "id": "js-nextjs-router",
+    "tags": ["nextjs", "router", "server", "client", "routing", "app", "ssr"],
+    "title": "Next.js App Router & Components",
+    "content": "Next.js App Router uses file-system routing under the `app` directory. Files named `page.tsx` define routes. Components are React Server Components (RSC) by default (rendering on the server, zero client bundle size). Add `'use client';` directive at the top of a file to declare a Client Component for interactivity, state, and browser APIs. Use `layout.tsx` for shared page structures."
+  },
+  {
+    "id": "js-node-streams",
+    "tags": ["node", "streams", "buffers", "fs", "pipe", "backend", "io"],
+    "title": "Node.js Streams & Buffers",
+    "content": "Buffers handle raw binary data in memory: `Buffer.from('hello')`. Streams handle data chunk-by-chunk for memory-efficiency. Readable streams read data: `fs.createReadStream('file.txt')`. Writable streams write data: `fs.createWriteStream('out.txt')`. Duplex/Transform streams do both. Connect them with `.pipe()`: `readable.pipe(transform).pipe(writable)`. Ideal for handling files larger than the memory buffer."
+  }
+]

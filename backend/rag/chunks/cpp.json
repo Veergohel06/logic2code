@@ -1,0 +1,92 @@
+[
+  {
+    "id": "cpp-pointers",
+    "tags": ["pointer", "address", "dereference", "reference", "null", "arrow", "*", "&"],
+    "title": "Pointers & References",
+    "content": "Pointer stores a memory address: `int* p = &x;`. Dereference: `*p = 10`. Null pointer: `int* p = nullptr;`. Reference is an alias — must be initialized: `int& r = x; r = 5;` modifies `x`. Pass by pointer: `void fn(int* p)`. Pass by reference: `void fn(int& r)`. Prefer references when the pointer must not be null. `const int* p` = pointer to const value; `int* const p` = const pointer."
+  },
+  {
+    "id": "cpp-memory",
+    "tags": ["heap", "stack", "new", "delete", "malloc", "free", "leak", "raii"],
+    "title": "Heap vs Stack & Manual Memory",
+    "content": "Stack: automatic, fast, limited (~1MB–8MB). Heap: manual, large, slow. Allocate: `int* p = new int(42);`. Free: `delete p;`. Array: `int* arr = new int[10]; delete[] arr;`. Memory leak: forgetting `delete`. Dangling pointer: using `p` after `delete p`. Modern C++ avoids manual memory with RAII (`unique_ptr`, `shared_ptr`)."
+  },
+  {
+    "id": "cpp-smart-pointers",
+    "tags": ["unique_ptr", "shared_ptr", "weak_ptr", "smart", "raii", "memory", "ownership"],
+    "title": "Smart Pointers (RAII)",
+    "content": "`unique_ptr<T>` — sole ownership, auto-deleted when out of scope: `auto p = make_unique<Dog>(\"Rex\")`. `shared_ptr<T>` — shared ownership, ref-counted: `auto p = make_shared<Dog>()`. `weak_ptr<T>` — non-owning, breaks circular references. Never mix smart and raw pointers for ownership. Use `std::move` to transfer unique_ptr ownership."
+  },
+  {
+    "id": "cpp-stl",
+    "tags": ["vector", "map", "set", "algorithm", "sort", "find", "stl", "container"],
+    "title": "STL Containers & Algorithms",
+    "content": "`vector<int> v = {1,2,3}; v.push_back(4); v.size();`. `map<string,int> m; m[\"key\"]=1; m.count(\"key\");`. `unordered_map` for O(1) average lookup. `set<int>` for sorted unique elements. STL algorithms: `sort(v.begin(), v.end()); auto it = find(v.begin(), v.end(), 3); count_if(v.begin(),v.end(), [](int x){return x>2;});`."
+  },
+  {
+    "id": "cpp-templates",
+    "tags": ["template", "generic", "class", "function", "parameter", "specialization"],
+    "title": "Templates (Generic Programming)",
+    "content": "Function template: `template<typename T> T max(T a, T b){ return a > b ? a : b; }`. Class template: `template<typename T> class Stack { vector<T> data; public: void push(T v){data.push_back(v);} };`. Specialization: `template<> int max<int>(int a,int b){...}`. Template argument deduction: compiler infers `T` from arguments. `constexpr if` for compile-time branching."
+  },
+  {
+    "id": "cpp-move-semantics",
+    "tags": ["move", "rvalue", "lvalue", "perfect", "forwarding", "&&", "noexcept"],
+    "title": "Move Semantics & Rvalue References",
+    "content": "Rvalue reference: `int&& r = 42`. Move constructor: `MyClass(MyClass&& other) noexcept { data = other.data; other.data = nullptr; }`. Move assignment: similar. `std::move(x)` casts x to rvalue — enables move instead of copy. `std::forward<T>` for perfect forwarding in templates. Mark move operations `noexcept` for STL compatibility and performance."
+  },
+  {
+    "id": "cpp-lambdas",
+    "tags": ["lambda", "closure", "capture", "function", "auto", "inline"],
+    "title": "Lambdas & Closures in C++",
+    "content": "Syntax: `[capture](params) -> return_type { body }`. Capture by value: `[x]`, by reference: `[&x]`, all by value: `[=]`, all by ref: `[&]`. Example: `auto sq = [](int x){ return x*x; }; sq(5);`. With STL: `sort(v.begin(),v.end(), [](int a,int b){ return a>b; });`. Mutable lambda (modify captured copy): `[x]() mutable { x++; }`."
+  },
+  {
+    "id": "cpp-oop",
+    "tags": ["class", "struct", "constructor", "destructor", "virtual", "inheritance", "override"],
+    "title": "Classes, Inheritance & Virtual Functions",
+    "content": "Class vs struct: identical except default access (`private` vs `public`). Constructor: `MyClass(int x) : member(x) {}` (initializer list preferred). Destructor: `~MyClass()` — called at end of scope. Virtual function enables runtime polymorphism: `virtual void speak() = 0;` (pure virtual → abstract). Derived must `override`. Always make base destructor `virtual` if class is inherited."
+  },
+  {
+    "id": "cpp-rule-of-five",
+    "tags": ["copy", "constructor", "assignment", "destructor", "move", "rule", "five"],
+    "title": "Rule of Five (Resource Management)",
+    "content": "If a class manages a resource (heap memory, file handle), define all five: Destructor, Copy Constructor, Copy Assignment, Move Constructor, Move Assignment. If you don't want copying: `= delete`. If default is fine: `= default`. Modern approach: use RAII wrappers (`unique_ptr`, `vector`) and let the compiler-generated defaults work (Rule of Zero)."
+  },
+  {
+    "id": "cpp-const",
+    "tags": ["const", "constexpr", "mutable", "immutable", "compile-time", "readonly"],
+    "title": "const & constexpr",
+    "content": "`const` at runtime: `const int x = 5`. `constexpr` computed at compile time: `constexpr int square(int n){ return n*n; }`. Member function that does not modify state: `int size() const { return n; }`. `mutable` allows a const method to modify a specific field (e.g., cache). Prefer `constexpr` over `#define` for compile-time constants."
+  },
+  {
+    "id": "cpp-namespaces",
+    "tags": ["namespace", "using", "scope", "std", "alias", "inline"],
+    "title": "Namespaces & Scope Resolution",
+    "content": "Define: `namespace MyLib { void fn(); }`. Call: `MyLib::fn()`. `using namespace std` imports all std symbols (avoid in headers). `using std::cout;` imports just one. Namespace alias: `namespace ml = MyMachineLearningLib;`. Nested: `namespace A::B { }`. Anonymous namespace: `namespace { ... }` — file-internal linkage (like `static`)."
+  },
+  {
+    "id": "cpp-exception",
+    "tags": ["exception", "try", "catch", "throw", "noexcept", "terminate", "std"],
+    "title": "Exception Handling in C++",
+    "content": "`try { risky(); } catch(const std::exception& e){ cerr << e.what(); } catch(...){ /* catch-all */ }`. Throw: `throw std::runtime_error(\"msg\")`. Standard exceptions: `std::runtime_error`, `std::invalid_argument`, `std::out_of_range`. `noexcept` guarantees no exception — compiler can optimize. Destructors should never throw. Use RAII to avoid leaks when exceptions propagate."
+  },
+  {
+    "id": "cpp-io",
+    "tags": ["iostream", "cin", "cout", "file", "fstream", "ifstream", "ofstream", "sstream"],
+    "title": "I/O Streams",
+    "content": "Console: `cout << \"Hello \" << name << endl;`. `cin >> x;` reads until whitespace. `getline(cin, line)` reads entire line. File read: `ifstream f(\"file.txt\"); string line; while(getline(f,line)){ ... }`. File write: `ofstream out(\"out.txt\"); out << data;`. String stream: `ostringstream oss; oss << x << \",\" << y; string s = oss.str();`."
+  },
+  {
+    "id": "cpp-big-o",
+    "tags": ["complexity", "big-o", "time", "space", "optimize", "algorithm", "performance"],
+    "title": "Complexity Analysis in C++",
+    "content": "Vector access: O(1). Vector insert at end (amortized): O(1). Insert at middle: O(n). `unordered_map` lookup: O(1) average, O(n) worst. `map` lookup: O(log n). `sort`: O(n log n). Use `reserve(n)` on vectors to avoid reallocations. Prefer `emplace_back` over `push_back` to construct in-place. Profile with `-O2` before optimizing manually."
+  },
+  {
+    "id": "cpp-concurrency",
+    "tags": ["thread", "mutex", "lock", "atomic", "condition", "async", "future", "concurrent"],
+    "title": "C++ Concurrency (C++11+)",
+    "content": "`#include <thread>`. Create: `std::thread t(fn, args); t.join();`. Mutex: `std::mutex m; std::lock_guard<mutex> lk(m);`. `std::atomic<int>` for lock-free counters. Async tasks: `auto f = std::async(std::launch::async, fn); auto val = f.get();`. Condition variable: `cv.wait(lk, []{ return ready; }); cv.notify_all();`. Avoid data races — always synchronize shared state."
+  }
+]

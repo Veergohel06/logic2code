@@ -1,0 +1,92 @@
+[
+  {
+    "id": "go-goroutines",
+    "tags": ["goroutine", "go", "concurrency", "lightweight", "thread", "parallel", "async"],
+    "title": "Goroutines",
+    "content": "A goroutine is a lightweight thread managed by the Go runtime: `go fn()`. Goroutines start almost instantly and have a small initial stack (~2KB, grows as needed). Thousands can run concurrently. To wait for goroutines to finish, use a `sync.WaitGroup`: `wg.Add(1); go func(){ defer wg.Done(); doWork() }(); wg.Wait()`. Never use goroutines without a way to know when they complete."
+  },
+  {
+    "id": "go-channels",
+    "tags": ["channel", "chan", "send", "receive", "buffer", "block", "communicate"],
+    "title": "Channels — Communicating Between Goroutines",
+    "content": "Create: `ch := make(chan int)` (unbuffered) or `make(chan int, 10)` (buffered). Send: `ch <- 42`. Receive: `val := <-ch`. Unbuffered blocks until both sides are ready. Buffered blocks when full/empty. Close: `close(ch)`. Range over channel: `for v := range ch {}`. Multiple channels: `select { case v := <-a: ... case b <- x: ... }`. Channels are the Go way to avoid shared-state data races."
+  },
+  {
+    "id": "go-interfaces",
+    "tags": ["interface", "implement", "duck", "typing", "satisfy", "method", "set"],
+    "title": "Interfaces — Implicit Implementation",
+    "content": "Go interfaces are satisfied implicitly — no `implements` keyword. `type Stringer interface { String() string }`. Any type with a `String() string` method satisfies `Stringer`. `fmt.Println` uses `Stringer` automatically. Empty interface `interface{}` (or `any` in Go 1.18+) accepts any value. Use type assertion: `s, ok := val.(string)`. Type switch: `switch v := val.(type) { case string: ... }`."
+  },
+  {
+    "id": "go-error-handling",
+    "tags": ["error", "return", "nil", "wrap", "fmt", "errors", "sentinel", "handling"],
+    "title": "Error Handling in Go",
+    "content": "Go returns errors as values: `val, err := fn(); if err != nil { return err }`. Create errors: `errors.New(\"msg\")` or `fmt.Errorf(\"context: %w\", err)`. Wrap for chain: `%w` allows `errors.Is(err, target)` and `errors.As(err, &target)`. Sentinel errors: `var ErrNotFound = errors.New(\"not found\")`. Custom error type: implement `Error() string`. Avoid panic for expected errors."
+  },
+  {
+    "id": "go-defer",
+    "tags": ["defer", "cleanup", "fifo", "lifo", "stack", "return", "close"],
+    "title": "defer, panic & recover",
+    "content": "`defer fn()` schedules `fn` to run when the surrounding function returns (LIFO order). Use for cleanup: `defer file.Close()`, `defer mu.Unlock()`. `panic` stops normal execution and unwinds the stack. `recover()` inside a deferred function catches a panic: `defer func(){ if r := recover(); r != nil { log.Println(r) } }()`. Use panic only for truly unexpected, unrecoverable errors."
+  },
+  {
+    "id": "go-slices",
+    "tags": ["slice", "array", "append", "cap", "len", "copy", "make", "grow"],
+    "title": "Slices — Go's Dynamic Array",
+    "content": "Slice = pointer + length + capacity. Create: `s := []int{1,2,3}` or `make([]int, len, cap)`. Append: `s = append(s, 4)`. Slicing: `s[1:3]` (shares backing array!). Copy to avoid aliasing: `dst := make([]int, len(src)); copy(dst, src)`. `len(s)` = current size; `cap(s)` = backing array capacity. Grow efficiently: `s = append(s, batch...)`. Nil slice has len=cap=0 and is usable."
+  },
+  {
+    "id": "go-maps",
+    "tags": ["map", "key", "value", "delete", "ok", "lookup", "nil", "hashmap"],
+    "title": "Maps in Go",
+    "content": "Create: `m := map[string]int{}` or `make(map[string]int)`. Set: `m[\"key\"] = 5`. Get: `v := m[\"key\"]` (zero value if missing). Safe get: `v, ok := m[\"key\"]; if ok { ... }`. Delete: `delete(m, \"key\")`. Iterate: `for k, v := range m {}`. Maps are not ordered — sort keys for deterministic output. Nil map panics on write — always initialize. Maps are not safe for concurrent use — use `sync.Map` or a mutex."
+  },
+  {
+    "id": "go-structs",
+    "tags": ["struct", "type", "method", "receiver", "embedding", "composition"],
+    "title": "Structs, Methods & Embedding",
+    "content": "Define: `type Point struct { X, Y float64 }`. Value receiver: `func (p Point) Dist() float64 { ... }`. Pointer receiver (to modify): `func (p *Point) Scale(f float64) { p.X *= f }`. Embedding for composition: `type Circle struct { Point; Radius float64 }`. Access: `c.X` (promoted from Point). Embedding is not inheritance — no polymorphism unless an interface is satisfied."
+  },
+  {
+    "id": "go-generics",
+    "tags": ["generic", "type", "parameter", "constraint", "any", "comparable", "1.18"],
+    "title": "Generics (Go 1.18+)",
+    "content": "Generic function: `func Map[T, U any](s []T, f func(T) U) []U`. Type constraint: `func Sum[T int | float64](s []T) T`. `comparable` constraint: types that support `==`. Custom constraint interface: `type Number interface { int | int64 | float64 }`. Type inference: compiler often infers type params. Use generics to avoid repeated code across types, but prefer simple interfaces when they suffice."
+  },
+  {
+    "id": "go-context",
+    "tags": ["context", "cancel", "timeout", "deadline", "value", "request", "propagate"],
+    "title": "context Package",
+    "content": "`context.Context` carries deadlines, cancellation signals, and request-scoped values. Create: `ctx, cancel := context.WithCancel(context.Background()); defer cancel()`. With timeout: `ctx, cancel := context.WithTimeout(ctx, 5*time.Second)`. Check cancellation: `select { case <-ctx.Done(): return ctx.Err() }`. Pass context as first argument to all functions that do I/O. Never store context in a struct."
+  },
+  {
+    "id": "go-packages",
+    "tags": ["package", "module", "import", "go.mod", "visibility", "export", "init"],
+    "title": "Packages, Modules & Visibility",
+    "content": "Module: `go mod init github.com/user/repo`. Package name = directory name. Export: capitalize first letter (`Exported` vs `unexported`). Import: `import ( \"fmt\"; \"github.com/pkg/errors\" )`. Blank import side effect: `import _ \"net/http/pprof\"`. `init()` runs before `main()`, once per package. Multiple `init()` functions allowed. Avoid circular imports — restructure into shared packages."
+  },
+  {
+    "id": "go-testing",
+    "tags": ["test", "testing", "benchmark", "table", "t.Run", "go-test", "coverage"],
+    "title": "Testing in Go",
+    "content": "File: `foo_test.go`, function: `func TestAdd(t *testing.T) { ... }`. Fail: `t.Errorf(\"got %d, want %d\", got, want)`. Table tests: `tests := []struct{in,want int}{{1,1},{2,4}}; for _, tt := range tests { t.Run(..., func(t *testing.T){ ... }) }`. Run: `go test ./...`. Coverage: `go test -cover`. Benchmark: `func BenchmarkAdd(b *testing.B){ for i:=0;i<b.N;i++{ Add(2,3) } }`. Subtests with `t.Run` are parallelizable."
+  },
+  {
+    "id": "go-sync",
+    "tags": ["mutex", "rwmutex", "once", "waitgroup", "atomic", "sync", "race"],
+    "title": "Synchronization with sync Package",
+    "content": "`sync.Mutex`: `mu.Lock(); defer mu.Unlock()`. `sync.RWMutex`: multiple readers or one writer. `sync.Once`: execute a function exactly once: `once.Do(func(){ ... })`. `sync.WaitGroup`: `wg.Add(n); go work(); wg.Wait()`. `sync/atomic` for lock-free operations: `atomic.AddInt64(&counter, 1)`. Detect races: run tests with `-race` flag."
+  },
+  {
+    "id": "go-http",
+    "tags": ["http", "net", "server", "handler", "mux", "request", "response", "json"],
+    "title": "HTTP Server with net/http",
+    "content": "Handler: `func handler(w http.ResponseWriter, r *http.Request) { fmt.Fprintln(w, \"Hello\") }`. Register: `http.HandleFunc(\"/\", handler)`. Serve: `http.ListenAndServe(\":8080\", nil)`. Custom mux: `mux := http.NewServeMux()`. JSON response: `json.NewEncoder(w).Encode(data)`. Read body: `json.NewDecoder(r.Body).Decode(&payload)`. Set header: `w.Header().Set(\"Content-Type\", \"application/json\")`."
+  },
+  {
+    "id": "go-composition",
+    "tags": ["composition", "embedding", "interface", "design", "pattern", "favor"],
+    "title": "Composition over Inheritance",
+    "content": "Go has no class hierarchy — use composition. Embed structs: `type Logger struct { prefix string }; type Server struct { Logger; port int }`. The server gets all Logger methods promoted. Use interfaces for polymorphism. Prefer small, focused interfaces (`io.Reader`, `io.Writer`). Compose complex behavior by embedding multiple small types. This is idiomatic Go — avoid deep type hierarchies."
+  }
+]

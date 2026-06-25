@@ -1,0 +1,92 @@
+[
+  {
+    "id": "java-oop",
+    "tags": ["class", "object", "inheritance", "encapsulation", "polymorphism", "abstract", "interface"],
+    "title": "Object-Oriented Programming in Java",
+    "content": "Java OOP pillars: Encapsulation (private fields + getters/setters), Inheritance (`extends`), Polymorphism (method overriding + overloading), Abstraction (`abstract class` + `interface`). `class Animal { protected String name; Animal(String n){this.name=n;} void speak(){} }`. `class Dog extends Animal { @Override void speak(){ System.out.println(\"Woof\"); } }`. Use `super()` to call parent constructor."
+  },
+  {
+    "id": "java-generics",
+    "tags": ["generic", "type", "parameter", "wildcard", "bounded", "T", "collection"],
+    "title": "Generics in Java",
+    "content": "Generic class: `class Box<T> { T value; Box(T v){value=v;} }`. Generic method: `<T> T identity(T arg) { return arg; }`. Bounded: `<T extends Number>` or `<T extends Comparable<T>>`. Wildcards: `List<?>` (unknown), `List<? extends Animal>` (read-only upper bound), `List<? super Dog>` (write lower bound). Generics are erased at runtime (type erasure)."
+  },
+  {
+    "id": "java-collections",
+    "tags": ["list", "arraylist", "hashmap", "set", "hashset", "linkedlist", "collections", "map"],
+    "title": "Collections Framework",
+    "content": "List (ordered, duplicates): `ArrayList<String> list = new ArrayList<>(); list.add(\"a\");`. Map (key-value): `HashMap<String,Integer> map = new HashMap<>(); map.put(\"k\",1); map.get(\"k\");`. Set (unique): `HashSet<Integer> set = new HashSet<>();`. Iterate map: `for(Map.Entry<K,V> e : map.entrySet())`. Sort list: `Collections.sort(list)` or `list.sort(Comparator.naturalOrder())`."
+  },
+  {
+    "id": "java-streams",
+    "tags": ["stream", "lambda", "filter", "map", "collect", "reduce", "pipeline", "functional"],
+    "title": "Java Streams & Lambdas",
+    "content": "Stream pipeline: source → intermediate ops → terminal op. `list.stream().filter(x -> x > 0).map(x -> x*2).collect(Collectors.toList())`. Terminal ops: `collect`, `count`, `reduce`, `findFirst`, `anyMatch`, `forEach`. Parallel: `list.parallelStream()`. Method reference: `list.stream().map(String::toUpperCase)`. `Collectors.groupingBy(Person::getDept)`."
+  },
+  {
+    "id": "java-exceptions",
+    "tags": ["exception", "try", "catch", "finally", "throw", "checked", "unchecked", "runtime"],
+    "title": "Exception Handling",
+    "content": "Checked exceptions must be declared or caught: `throws IOException`. Unchecked (RuntimeException) do not. Try-with-resources auto-closes: `try (BufferedReader r = new BufferedReader(new FileReader(f))) { ... }`. Multi-catch: `catch (IOException | SQLException e)`. Custom exception: `class AppException extends RuntimeException { AppException(String msg){super(msg);} }`."
+  },
+  {
+    "id": "java-threading",
+    "tags": ["thread", "runnable", "synchronized", "concurrent", "executor", "lock", "volatile"],
+    "title": "Multithreading & Concurrency",
+    "content": "Create thread: `new Thread(() -> System.out.println(\"hi\")).start()`. Executor pool: `ExecutorService ex = Executors.newFixedThreadPool(4); ex.submit(task);`. Synchronize: `synchronized(this) { ... }` or `ReentrantLock`. `volatile` ensures visibility across threads. `AtomicInteger` for lock-free counters. `CountDownLatch`, `CyclicBarrier` for coordination."
+  },
+  {
+    "id": "java-interfaces",
+    "tags": ["interface", "default", "static", "functional", "implement", "abstract"],
+    "title": "Interfaces & Default Methods",
+    "content": "Interface defines a contract. Since Java 8, interfaces can have `default` and `static` methods. `interface Drawable { void draw(); default String describe(){ return \"Drawable\"; } }`. Functional interface (one abstract method): annotate `@FunctionalInterface` — used with lambdas. `Runnable`, `Callable`, `Comparator`, `Predicate<T>`, `Function<T,R>` are common functional interfaces."
+  },
+  {
+    "id": "java-optional",
+    "tags": ["optional", "null", "empty", "present", "orElse", "map", "flatMap", "ifPresent"],
+    "title": "Optional — Avoiding NullPointerException",
+    "content": "`Optional<T>` wraps a value that may or may not be present. Create: `Optional.of(val)`, `Optional.ofNullable(val)`, `Optional.empty()`. Retrieve: `opt.get()` (throws if empty), `opt.orElse(default)`, `opt.orElseGet(supplier)`. Transform: `opt.map(fn)`, `opt.flatMap(fn)`. Check: `opt.isPresent()`, `opt.isEmpty()`. Use in return types — never pass `null` when you could return `Optional`."
+  },
+  {
+    "id": "java-records",
+    "tags": ["record", "immutable", "data", "class", "equals", "hashcode", "toString"],
+    "title": "Records (Java 16+)",
+    "content": "Records are concise immutable data classes: `record Point(int x, int y) {}`. The compiler auto-generates constructor, `equals()`, `hashCode()`, `toString()`, and accessors (`point.x()`). Add custom methods in the body. Compact constructors validate args: `record Range(int lo, int hi) { Range { if(lo>hi) throw new IllegalArgumentException(); } }`. Cannot extend other classes but can implement interfaces."
+  },
+  {
+    "id": "java-memory",
+    "tags": ["heap", "stack", "garbage", "collection", "gc", "memory", "jvm", "reference"],
+    "title": "JVM Memory & Garbage Collection",
+    "content": "JVM memory: Heap (objects), Stack (frames/local vars per thread), Metaspace (class metadata), Code Cache. GC automatically reclaims unreachable objects. Reference types: `StrongReference` (default), `WeakReference` (GC can collect), `SoftReference` (collected under memory pressure), `PhantomReference`. Avoid memory leaks by not holding long-lived references to short-lived objects."
+  },
+  {
+    "id": "java-string",
+    "tags": ["string", "stringbuilder", "immutable", "intern", "concat", "format", "comparison"],
+    "title": "Strings & StringBuilder",
+    "content": "`String` is immutable — concatenation in a loop creates N objects. Use `StringBuilder` for mutable building: `sb.append(str).append(n).toString()`. Compare content: `.equals()` not `==`. Ignore case: `.equalsIgnoreCase()`. Useful methods: `substring(start,end)`, `split(regex)`, `trim()`, `strip()` (Unicode-aware), `contains()`, `startsWith()`, `String.format(\"%s=%d\",key,val)`. Java 13+ text blocks: `\"\"\"`."
+  },
+  {
+    "id": "java-design-patterns",
+    "tags": ["design", "pattern", "singleton", "factory", "builder", "observer", "strategy"],
+    "title": "Common Design Patterns in Java",
+    "content": "Singleton: private constructor + static instance. Builder: fluent setters + `build()` method (avoids telescoping constructors). Factory: `ShapeFactory.create(\"circle\")` returns correct subtype. Observer: Subject maintains a list of Observers and calls `update()` on change. Strategy: inject behaviour via a functional interface. These patterns are language-agnostic but Java idioms make them clean."
+  },
+  {
+    "id": "java-comparator",
+    "tags": ["comparator", "comparable", "sort", "order", "lambda", "chaining"],
+    "title": "Comparator & Sorting",
+    "content": "Implement `Comparable<T>` on a class: `int compareTo(T o)`. External sort: `Comparator.comparing(Person::getAge).thenComparing(Person::getName)`. Lambda: `list.sort((a,b) -> a.age - b.age)`. Reverse: `Comparator.reverseOrder()`. Sort array: `Arrays.sort(arr)`. Sort map by value: `map.entrySet().stream().sorted(Map.Entry.comparingByValue())`."
+  },
+  {
+    "id": "java-io",
+    "tags": ["file", "io", "nio", "path", "read", "write", "buffer", "stream"],
+    "title": "File I/O with NIO (Java 11+)",
+    "content": "Modern NIO: `Path p = Path.of(\"file.txt\")`. Read all text: `String text = Files.readString(p)`. Read lines: `List<String> lines = Files.readAllLines(p)`. Write: `Files.writeString(p, content)`. Stream lines lazily: `Files.lines(p).filter(...).forEach(...)`. Create directories: `Files.createDirectories(p)`. Copy: `Files.copy(src, dst, StandardCopyOption.REPLACE_EXISTING)`."
+  },
+  {
+    "id": "java-sealed-classes",
+    "tags": ["sealed", "class", "permits", "pattern", "match", "switch", "record"],
+    "title": "Sealed Classes & Pattern Matching (Java 17+)",
+    "content": "Sealed classes restrict which classes can extend them: `sealed interface Shape permits Circle, Square, Triangle {}`. Pattern matching in switch (Java 21): `switch(shape) { case Circle c -> Math.PI*c.radius()*c.radius(); case Square s -> s.side()*s.side(); }`. Pattern matching `instanceof`: `if (obj instanceof String s && s.length() > 5)`. Enables exhaustive and safe dispatch."
+  }
+]

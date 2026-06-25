@@ -1,0 +1,92 @@
+[
+  {
+    "id": "c-pointers",
+    "tags": ["pointer", "address", "dereference", "null", "void", "*", "&", "reference"],
+    "title": "Pointers in C",
+    "content": "A pointer holds a memory address: `int x = 5; int* p = &x;`. Dereference to read/write: `*p = 10;`. Null pointer: `int* p = NULL;`. Pointer to pointer: `int** pp = &p;`. `void*` is a generic pointer — must cast before use. Pointer arithmetic: `p++` moves to the next `int` (4 bytes). Array name is a pointer to its first element."
+  },
+  {
+    "id": "c-memory",
+    "tags": ["malloc", "calloc", "realloc", "free", "heap", "stack", "leak", "memory"],
+    "title": "Dynamic Memory Allocation",
+    "content": "Allocate on heap: `int* arr = malloc(n * sizeof(int));`. Initialize to zero: `calloc(n, sizeof(int))`. Resize: `arr = realloc(arr, new_n * sizeof(int))`. Always check: `if(arr == NULL) { exit(1); }`. Free: `free(arr); arr = NULL;`. Memory leak: not calling `free`. Double free: calling `free` twice on same pointer. Use Valgrind to detect leaks."
+  },
+  {
+    "id": "c-structs",
+    "tags": ["struct", "union", "typedef", "member", "arrow", "dot", "compound"],
+    "title": "Structs & Typedef",
+    "content": "Define: `struct Point { int x; int y; };`. Declare: `struct Point p = {3, 4};`. Access: `p.x`. With pointer: `struct Point* pp = &p; pp->x = 5;`. `typedef struct { int x; int y; } Point;` — now use `Point` directly. Struct size may include padding for alignment. `union` shares memory — size is largest member."
+  },
+  {
+    "id": "c-arrays-strings",
+    "tags": ["array", "string", "char", "null-terminator", "strlen", "strcpy", "buffer"],
+    "title": "Arrays & Strings in C",
+    "content": "Array: `int arr[5] = {1,2,3,4,5};`. Strings are `char` arrays with `\\0` terminator: `char name[] = \"Alice\";`. `strlen(s)` counts without `\\0`. `strcpy(dst, src)` — ensure `dst` is large enough (use `strncpy`). `strcmp(a,b)` compares. `strcat` appends. `sprintf(buf, \"%d\", n)` formats into buffer. Avoid buffer overflow — always bounds-check."
+  },
+  {
+    "id": "c-functions",
+    "tags": ["function", "prototype", "parameter", "return", "scope", "declaration"],
+    "title": "Functions & Prototypes",
+    "content": "Declare before use (prototype): `int add(int a, int b);`. Definition: `int add(int a, int b) { return a + b; }`. C passes by value — changes to parameters do not affect caller. To modify caller's variable, pass a pointer: `void increment(int* x) { (*x)++; }`. Recursion: each call gets its own stack frame. Limit recursion depth to avoid stack overflow."
+  },
+  {
+    "id": "c-file-io",
+    "tags": ["file", "fopen", "fclose", "fread", "fwrite", "fprintf", "fscanf", "io"],
+    "title": "File I/O in C",
+    "content": "Open: `FILE* f = fopen(\"file.txt\", \"r\");`. Modes: `r` (read), `w` (write/truncate), `a` (append), `r+` (read+write). Read line: `fgets(buf, sizeof(buf), f)`. Write: `fprintf(f, \"%s\\n\", str)`. Read formatted: `fscanf(f, \"%d\", &n)`. Binary: `fread/fwrite` with byte sizes. Always check `fopen` result and call `fclose(f)` when done."
+  },
+  {
+    "id": "c-preprocessor",
+    "tags": ["macro", "define", "include", "ifdef", "header", "guard", "preprocessor"],
+    "title": "Preprocessor Directives",
+    "content": "`#include <stdio.h>` (system) or `#include \"myfile.h\"` (local). `#define PI 3.14159`. Macro with args: `#define MAX(a,b) ((a)>(b)?(a):(b))` — always parenthesize. Header guard prevents double inclusion: `#ifndef MY_H #define MY_H ... #endif`. Modern alternative: `#pragma once`. `#ifdef DEBUG printf(\"val=%d\\n\", x); #endif`."
+  },
+  {
+    "id": "c-bitwise",
+    "tags": ["bitwise", "bit", "AND", "OR", "XOR", "shift", "mask", "flag"],
+    "title": "Bitwise Operations",
+    "content": "AND `&`: mask bits. OR `|`: set bits. XOR `^`: toggle bits. NOT `~`: flip all bits. Left shift `<<`: multiply by 2^n. Right shift `>>`: divide by 2^n (arithmetic for signed). Set bit k: `x |= (1 << k)`. Clear bit k: `x &= ~(1 << k)`. Toggle bit k: `x ^= (1 << k)`. Check bit k: `(x >> k) & 1`. Useful for flags and performance."
+  },
+  {
+    "id": "c-linked-list",
+    "tags": ["linked", "list", "node", "struct", "next", "pointer", "insert", "delete"],
+    "title": "Linked Lists",
+    "content": "Define node: `typedef struct Node { int data; struct Node* next; } Node;`. Create: `Node* n = malloc(sizeof(Node)); n->data = 5; n->next = NULL;`. Prepend: `new->next = head; head = new;`. Traverse: `Node* cur = head; while(cur){ printf(\"%d\\n\", cur->data); cur=cur->next; }`. Free all: traverse and free each node. Doubly linked list adds a `prev` pointer."
+  },
+  {
+    "id": "c-recursion",
+    "tags": ["recursion", "base", "case", "stack", "factorial", "fibonacci", "depth"],
+    "title": "Recursion in C",
+    "content": "Every recursive function needs a base case to stop. Factorial: `int fact(int n){ return n<=1 ? 1 : n*fact(n-1); }`. Each call pushes a stack frame — deep recursion causes stack overflow. Max safe depth ~10,000–100,000. Convert to iteration with an explicit stack when depth is unbounded. Tail recursion: some compilers optimize it to a loop (`-O2`)."
+  },
+  {
+    "id": "c-scope-lifetime",
+    "tags": ["scope", "lifetime", "auto", "static", "extern", "global", "local"],
+    "title": "Variable Scope & Lifetime",
+    "content": "Local variables are `auto` (stack, destroyed on function exit). `static` local: persists across calls, initialized once. `static` global: file scope only (hidden from other .c files). `extern` declares a variable defined in another file. Global variables: zero-initialized by default. Avoid globals — they make code hard to test. Use `static` to encapsulate module state."
+  },
+  {
+    "id": "c-function-pointers",
+    "tags": ["function", "pointer", "callback", "typedef", "qsort", "higher-order"],
+    "title": "Function Pointers & Callbacks",
+    "content": "Declare: `int (*fn)(int, int);`. Assign: `fn = &add;` or `fn = add;`. Call: `fn(3, 4)` or `(*fn)(3, 4)`. Typedef for readability: `typedef int (*BinaryOp)(int, int);`. Used in callbacks: `qsort(arr, n, sizeof(int), compare_fn)`. Strategy pattern: pass different functions to select behavior at runtime. Foundation for event systems and plugin architectures."
+  },
+  {
+    "id": "c-bit-fields",
+    "tags": ["bit", "field", "struct", "pack", "flag", "hardware", "embedded"],
+    "title": "Bit Fields in Structs",
+    "content": "Pack multiple small values into one struct word: `struct Flags { unsigned int read: 1; unsigned int write: 1; unsigned int execute: 1; };`. Saves memory — useful for embedded systems or protocol parsing. Layout is implementation-defined (padding, endianness). Do not use `sizeof` on bit fields. Combine with unions to read the raw integer and individual fields."
+  },
+  {
+    "id": "c-sorting",
+    "tags": ["sort", "qsort", "bubble", "compare", "algorithm", "array"],
+    "title": "Sorting in C",
+    "content": "Standard library: `qsort(arr, n, sizeof(int), cmp)` where `cmp` returns negative/zero/positive. Compare ints: `int cmp(const void* a, const void* b){ return (*(int*)a - *(int*)b); }`. Bubble sort (educational): O(n²). Merge sort: O(n log n), stable. qsort is not guaranteed stable — use a secondary key in comparator for stability. For strings: `strcmp` in comparator."
+  },
+  {
+    "id": "c-safety",
+    "tags": ["buffer", "overflow", "undefined", "behavior", "safe", "bounds", "format"],
+    "title": "Common C Safety Pitfalls",
+    "content": "Buffer overflow: writing past array bounds → undefined behavior. Use `strncpy`, `snprintf`, `fgets` with size limits. Format string attack: `printf(user_input)` is dangerous — always `printf(\"%s\", user_input)`. Integer overflow: `int` wraps around — use bounds checks or `unsigned`. Uninitialized pointer: use `= NULL` at declaration. Compile with `-Wall -Wextra -fsanitize=address` to catch issues."
+  }
+]

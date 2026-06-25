@@ -1,0 +1,104 @@
+[
+  {
+    "id": "ts-types-basics",
+    "tags": ["type", "interface", "string", "number", "boolean", "annotation", "primitive"],
+    "title": "TypeScript Basic Types & Annotations",
+    "content": "Annotate with `: type` after identifier. Primitives: `string`, `number`, `boolean`, `null`, `undefined`, `bigint`, `symbol`. Arrays: `string[]` or `Array<string>`. Tuples: `[string, number]`. `any` disables checking (avoid). `unknown` is safer — must narrow before use. `never` for unreachable code. Type alias: `type ID = string | number`."
+  },
+  {
+    "id": "ts-interfaces",
+    "tags": ["interface", "type", "shape", "object", "optional", "readonly", "extend"],
+    "title": "Interfaces vs Type Aliases",
+    "content": "Interface: `interface User { id: number; name: string; email?: string }`. Extend: `interface Admin extends User { role: string }`. Type alias: `type User = { id: number; name: string }`. Key differences: interfaces can be merged (declaration merging), type aliases can represent unions/intersections. Use `interface` for objects/classes, `type` for unions, intersections, and mapped types."
+  },
+  {
+    "id": "ts-generics",
+    "tags": ["generic", "type", "parameter", "T", "constraint", "extends", "utility"],
+    "title": "Generics",
+    "content": "Generic function: `function identity<T>(arg: T): T { return arg; }`. Constrain: `function getLength<T extends { length: number }>(arg: T)`. Generic interface: `interface Box<T> { value: T }`. Built-in generic utilities: `Partial<T>` (all optional), `Required<T>`, `Readonly<T>`, `Record<K,V>`, `Pick<T,K>`, `Omit<T,K>`, `ReturnType<F>`, `Parameters<F>`."
+  },
+  {
+    "id": "ts-union-intersection",
+    "tags": ["union", "intersection", "type", "narrow", "guard", "discriminated"],
+    "title": "Union & Intersection Types",
+    "content": "Union `A | B`: value is either A or B. Narrow with `typeof`, `instanceof`, or a type guard. Intersection `A & B`: value has all properties of both. Discriminated union: add a literal tag field `kind: 'circle' | 'square'` to distinguish members in a switch. Use `in` operator to check property existence for narrowing."
+  },
+  {
+    "id": "ts-type-guards",
+    "tags": ["type", "guard", "narrow", "is", "typeof", "instanceof", "discriminated"],
+    "title": "Type Guards & Narrowing",
+    "content": "User-defined type guard: `function isString(val: unknown): val is string { return typeof val === 'string'; }`. After `if (isString(x))`, TypeScript knows `x` is `string`. `instanceof` narrows class types. `in` narrows object shapes: `if ('name' in obj)`. Exhaustiveness check with `never`: `const _: never = val` in default branch of exhaustive switch."
+  },
+  {
+    "id": "ts-enums",
+    "tags": ["enum", "const", "union", "literal", "flag", "value"],
+    "title": "Enums & Literal Types",
+    "content": "Numeric enum: `enum Direction { Up, Down, Left, Right }`. String enum: `enum Status { Active = 'ACTIVE', Inactive = 'INACTIVE' }`. `const enum` is inlined at compile time (no runtime object). Alternative: use a string literal union `type Direction = 'Up' | 'Down' | 'Left' | 'Right'` — simpler and tree-shakeable."
+  },
+  {
+    "id": "ts-async",
+    "tags": ["async", "await", "promise", "type", "return", "generic"],
+    "title": "Async/Await with Types",
+    "content": "Async functions return `Promise<T>`: `async function fetchUser(id: number): Promise<User>`. Type the resolved value explicitly. For error handling, use `try/catch` with typed errors — catch blocks give `unknown`, so narrow with `instanceof Error`. Wrap with `Result<T,E>` pattern for explicit error typing without exceptions."
+  },
+  {
+    "id": "ts-mapped-types",
+    "tags": ["mapped", "type", "keyof", "in", "optional", "readonly", "template"],
+    "title": "Mapped Types & keyof",
+    "content": "`keyof T` produces a union of T's keys. Mapped type: `type Optional<T> = { [K in keyof T]?: T[K] }`. Add readonly: `{ readonly [K in keyof T]: T[K] }`. Template literal types: `type EventName<T extends string> = \\`on${Capitalize<T>}\\``. Conditional types: `T extends string ? 'yes' : 'no'`."
+  },
+  {
+    "id": "ts-classes",
+    "tags": ["class", "access", "private", "public", "protected", "readonly", "abstract"],
+    "title": "Classes & Access Modifiers",
+    "content": "TypeScript classes add access modifiers: `public` (default), `private` (compile-time only), `protected`, `readonly`. Constructor shorthand: `constructor(private name: string, public age: number) {}`. Abstract class: `abstract class Shape { abstract area(): number; }`. Implement interface: `class Circle extends Shape implements Drawable { ... }`."
+  },
+  {
+    "id": "ts-decorators",
+    "tags": ["decorator", "class", "method", "property", "parameter", "metadata"],
+    "title": "Decorators (Experimental)",
+    "content": "Enable with `\"experimentalDecorators\": true` in tsconfig. Class decorator: `@sealed` applied before class definition. Method decorator: `@log` wraps a method. Property decorator for validation. Parameter decorator for DI. Used heavily in Angular and NestJS. Stage 3 native decorators (TC39) have slightly different semantics than TypeScript's legacy decorators."
+  },
+  {
+    "id": "ts-tsconfig",
+    "tags": ["tsconfig", "strict", "target", "module", "paths", "compiler", "option"],
+    "title": "tsconfig.json Key Options",
+    "content": "`strict: true` enables all strict checks (recommended). `target`: output JS version (`ES2020`, `ESNext`). `module`: module system (`commonjs`, `esnext`). `paths`: path aliases `{ \"@/*\": [\"./src/*\"] }`. `noImplicitAny`: error on inferred `any`. `strictNullChecks`: `null`/`undefined` not assignable to other types. `outDir`: compiled output folder."
+  },
+  {
+    "id": "ts-utility-types",
+    "tags": ["partial", "required", "readonly", "pick", "omit", "record", "extract", "exclude"],
+    "title": "Built-in Utility Types",
+    "content": "`Partial<T>` — all fields optional. `Required<T>` — all fields required. `Readonly<T>` — immutable. `Pick<T, 'a'|'b'>` — subset of fields. `Omit<T, 'password'>` — all except specified. `Record<string, number>` — dict type. `Extract<T, U>` — common members. `Exclude<T, U>` — remove members. `NonNullable<T>` — removes null/undefined."
+  },
+  {
+    "id": "ts-discriminated-unions",
+    "tags": ["discriminated", "union", "tag", "kind", "switch", "narrow", "pattern"],
+    "title": "Discriminated Unions (Pattern Matching)",
+    "content": "Add a literal `type` or `kind` field to distinguish union members: `type Shape = { kind:'circle'; radius:number } | { kind:'square'; side:number }`. Then switch on `kind` — TypeScript narrows automatically. Add a default case with `const _exhaustive: never = shape` to catch unhandled cases at compile time."
+  },
+  {
+    "id": "ts-module-augmentation",
+    "tags": ["module", "augmentation", "declaration", "merge", "global", "namespace"],
+    "title": "Module Augmentation & Declaration Merging",
+    "content": "Extend an existing module's types: `declare module 'express' { interface Request { user?: User } }`. Merge interfaces: two `interface Foo` declarations in the same or different files are merged. Global augmentation: `declare global { interface Window { analytics: Analytics } }`. Useful for adding types to third-party libraries without modifying their code."
+  },
+  {
+    "id": "ts-type-narrowing-patterns",
+    "tags": ["assertion", "as", "non-null", "!", "satisfies", "cast"],
+    "title": "Type Assertions & satisfies",
+    "content": "Type assertion: `value as string` (compile-time cast, no runtime check). Non-null assertion: `el!.value` tells TS the value is non-null. `satisfies` operator (TS 4.9): `const config = { port: 3000 } satisfies Partial<Config>` — checks structure while preserving inferred literal types. Prefer `satisfies` over `as` when you need both validation and inference."
+  },
+  {
+    "id": "ts-generics-constraints",
+    "tags": ["generics", "constraints", "extends", "keyof", "parameter"],
+    "title": "TypeScript Generics & Constraints",
+    "content": "Generics parameterize types: `function identity<T>(arg: T): T { return arg; }`. Add constraints using `extends`: `function logLength<T extends { length: number }>(arg: T)`. Use `keyof` to lookup object keys: `function getProperty<T, K extends keyof T>(obj: T, key: K) { return obj[key]; }`. This ensures type safety for dynamic access."
+  },
+  {
+    "id": "ts-conditional-mapped",
+    "tags": ["conditional", "mapped", "types", "extends", "infer", "keyof"],
+    "title": "Conditional & Mapped Types",
+    "content": "Conditional types choose types based on condition: `type IsString<T> = T extends string ? true : false`. Use `infer` to extract nested types: `type ReturnType<T> = T extends (...args: any[]) => infer R ? R : any`. Mapped types transform property keys: `type Readonly<T> = { readonly [P in keyof T]: T[P] }`. Use `-readonly` or `+?` to strip or add modifiers."
+  }
+]

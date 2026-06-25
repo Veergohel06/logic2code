@@ -1,0 +1,92 @@
+[
+  {
+    "id": "r-vectors",
+    "tags": ["vector", "c", "atomic", "element", "index", "numeric", "logical", "character"],
+    "title": "Vectors — R's Core Data Structure",
+    "content": "Vectors are R's fundamental type: `v <- c(1, 2, 3, 4, 5)`. R is 1-indexed (not 0). Access: `v[1]` = first element. Slice: `v[2:4]`. Logical indexing: `v[v > 3]`. Vectorized operations: `v * 2`, `v + 10` apply element-wise. Named vectors: `named <- c(a=1, b=2); named[\"a\"]`. `length(v)` = size. Coercion hierarchy: logical < integer < double < complex < character."
+  },
+  {
+    "id": "r-dataframes",
+    "tags": ["dataframe", "data.frame", "row", "column", "select", "filter", "str", "head"],
+    "title": "Data Frames",
+    "content": "Create: `df <- data.frame(name=c(\"A\",\"B\"), score=c(90,85))`. View structure: `str(df)`. First rows: `head(df, 10)`. Dimensions: `dim(df)`. Column: `df$score` or `df[,\"score\"]`. Row filter: `df[df$score > 85, ]`. Add column: `df$grade <- ifelse(df$score >= 90, \"A\", \"B\")`. Remove column: `df$col <- NULL`. Rename: `colnames(df)[2] <- \"marks\"`."
+  },
+  {
+    "id": "r-dplyr",
+    "tags": ["dplyr", "filter", "select", "mutate", "arrange", "summarise", "group_by", "pipe"],
+    "title": "Data Manipulation with dplyr",
+    "content": "`filter()` rows: `filter(df, score > 80)`. `select()` cols: `select(df, name, score)`. `mutate()` add/modify: `mutate(df, grade = score/10)`. `arrange()` sort: `arrange(df, desc(score))`. `summarise()` aggregate: `summarise(df, avg=mean(score))`. `group_by()` + `summarise()`: `df %>% group_by(dept) %>% summarise(avg=mean(salary))`. Pipe `%>%` chains operations left-to-right."
+  },
+  {
+    "id": "r-tidyr",
+    "tags": ["tidyr", "pivot", "wide", "long", "gather", "spread", "fill", "separate"],
+    "title": "Reshaping Data with tidyr",
+    "content": "`pivot_longer()` converts wide → long format: `pivot_longer(df, cols=c(Q1,Q2), names_to=\"quarter\", values_to=\"revenue\")`. `pivot_wider()` converts long → wide. `separate()` splits one column into many: `separate(df, full_name, into=c(\"first\",\"last\"), sep=\" \")`. `unite()` combines columns. `fill()` fills NA values from adjacent rows. `drop_na()` removes rows with any NA."
+  },
+  {
+    "id": "r-ggplot2",
+    "tags": ["ggplot2", "plot", "aes", "geom", "visualization", "chart", "layer", "theme"],
+    "title": "Data Visualization with ggplot2",
+    "content": "ggplot2 uses grammar of graphics: `ggplot(data, aes(x,y)) + geom_*()`. Scatter: `geom_point()`. Line: `geom_line()`. Bar: `geom_bar(stat=\"identity\")`. Histogram: `geom_histogram(bins=30)`. Color by group: `aes(color=category)`. Facet (subplots): `facet_wrap(~group)`. Labels: `labs(title=\"T\", x=\"X\", y=\"Y\")`. Theme: `theme_minimal()`. Save: `ggsave(\"plot.png\", width=8, height=5)`."
+  },
+  {
+    "id": "r-null-missing",
+    "tags": ["na", "null", "missing", "is.na", "na.rm", "complete.cases", "replace_na", "impute"],
+    "title": "Handling NA & NULL in R",
+    "content": "NA = missing value; NULL = empty object. Detect: `is.na(x)`. Count NAs: `sum(is.na(df$col))`. Remove rows with any NA: `na.omit(df)` or `df[complete.cases(df),]`. Compute ignoring NA: `mean(x, na.rm=TRUE)`. Replace NA: `df$col[is.na(df$col)] <- 0`. With dplyr: `mutate(df, col=replace_na(col, 0))`. With tidyr: `replace_na(list(col=0))`."
+  },
+  {
+    "id": "r-apply-family",
+    "tags": ["apply", "lapply", "sapply", "tapply", "vapply", "map", "loop", "functional"],
+    "title": "Apply Family & Functional Programming",
+    "content": "`apply(matrix, 1, fn)` applies fn to each row (1) or column (2). `lapply(list, fn)` returns a list. `sapply(list, fn)` simplifies to vector/matrix if possible. `tapply(data, group, fn)` applies fn per group. `vapply(list, fn, type)` is safer sapply with expected type. Modern alternative: `purrr::map(list, fn)` returns list, `map_dbl` for doubles. Avoid explicit for-loops when these suffice."
+  },
+  {
+    "id": "r-functions",
+    "tags": ["function", "argument", "default", "scope", "return", "environment", "closure"],
+    "title": "Functions in R",
+    "content": "Define: `add <- function(a, b=0) { a + b }`. Last expression is returned (no explicit `return` needed). Call by name: `add(b=3, a=1)`. Variable args: `function(...){ args <- list(...) }`. Scoping: R uses lexical scoping — functions search the environment where they were defined. Closures: `make_adder <- function(n) function(x) x+n`. Anonymous: `(function(x) x^2)(5)`."
+  },
+  {
+    "id": "r-strings",
+    "tags": ["string", "paste", "grep", "gsub", "substr", "nchar", "stringr", "regex"],
+    "title": "String Manipulation",
+    "content": "Concatenate: `paste(\"Hello\", \"World\")` or `paste0(\"no\",\"space\")`. `sprintf(\"%s scored %.1f%%\", name, score)`. Length: `nchar(s)`. Substring: `substr(s, 1, 5)`. Pattern match: `grepl(pattern, s)`. Replace: `gsub(pattern, replacement, s)`. Split: `strsplit(s, \",\")[[1]]`. With stringr: `str_trim()`, `str_pad()`, `str_detect()`, `str_replace_all()`, `str_split_fixed()`."
+  },
+  {
+    "id": "r-lists",
+    "tags": ["list", "named", "nested", "index", "double-bracket", "lapply", "recursive"],
+    "title": "Lists in R",
+    "content": "Lists are heterogeneous containers: `lst <- list(name=\"Alice\", scores=c(90,85), active=TRUE)`. Access by name: `lst$name` or `lst[[\"name\"]]`. By position: `lst[[2]]`. Single `[` returns a list (subset), double `[[` returns the element. Modify: `lst$age <- 25`. Nested: `lst$address$city`. Convert to vector: `unlist(lst)`. Use lists for JSON-like structures and return values from functions."
+  },
+  {
+    "id": "r-control-flow",
+    "tags": ["if", "else", "for", "while", "repeat", "break", "next", "loop", "control"],
+    "title": "Control Flow in R",
+    "content": "`if (cond) { ... } else if (cond2) { ... } else { ... }`. Vectorized: `ifelse(cond_vec, yes_vec, no_vec)`. For loop: `for (i in 1:10) { ... }`. While: `while (cond) { ... }`. `break` exits loop; `next` skips to next iteration. `repeat { ... if(done) break }`. In R, prefer vectorized operations and `apply` family over explicit loops for performance."
+  },
+  {
+    "id": "r-statistics",
+    "tags": ["mean", "median", "sd", "var", "quantile", "cor", "summary", "statistics"],
+    "title": "Descriptive Statistics",
+    "content": "`mean(x)`, `median(x)`, `sd(x)` (std dev), `var(x)`. Range: `range(x)` → min & max. Quantiles: `quantile(x, probs=c(0.25,0.75))`. Summary: `summary(df)` gives min/Q1/median/mean/Q3/max per column. Correlation: `cor(x, y)` or `cor(df)` for matrix. Frequency table: `table(df$category)`. Test normality: `shapiro.test(x)`."
+  },
+  {
+    "id": "r-merging",
+    "tags": ["merge", "join", "inner", "left", "right", "full", "dplyr", "by"],
+    "title": "Joining Data Frames",
+    "content": "Base R: `merge(x, y, by=\"id\")` (inner join by default). Left join: `merge(x, y, all.x=TRUE)`. Full join: `merge(x, y, all=TRUE)`. dplyr (preferred): `inner_join(x, y, by=\"id\")`, `left_join()`, `right_join()`, `full_join()`, `anti_join()` (rows in x not in y). Join on different col names: `by=c(\"x_col\"=\"y_col\")`. Multiple keys: `by=c(\"id\",\"date\")`."
+  },
+  {
+    "id": "r-io",
+    "tags": ["read", "write", "csv", "excel", "readr", "readxl", "file", "rds", "json"],
+    "title": "Reading & Writing Data",
+    "content": "CSV: `df <- read.csv(\"file.csv\")` or faster `readr::read_csv(\"file.csv\")`. Write: `write.csv(df, \"out.csv\", row.names=FALSE)`. Excel: `readxl::read_excel(\"file.xlsx\", sheet=1)`. RDS (R binary): `saveRDS(obj, \"file.rds\"); obj <- readRDS(\"file.rds\")`. JSON: `jsonlite::fromJSON(\"file.json\")`. Specify encoding: `read.csv(\"file.csv\", fileEncoding=\"UTF-8\")`."
+  },
+  {
+    "id": "r-environments",
+    "tags": ["environment", "scope", "global", "local", "assign", "get", "parent", "search"],
+    "title": "Environments & Scoping",
+    "content": "R has a search path of environments. `globalenv()` is your workspace. `baseenv()` has base functions. `new.env()` creates an isolated environment. Assign into env: `assign(\"x\", 10, envir=myenv)`. Get: `get(\"x\", envir=myenv)`. `<<-` assigns to parent scope (use with caution). `environment(fn)` returns where fn was defined. Environments are first-class — used for namespaces, closures, and R5/R6 classes."
+  }
+]

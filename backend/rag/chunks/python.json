@@ -1,0 +1,146 @@
+[
+  {
+    "id": "py-list-comprehension",
+    "tags": ["list", "comprehension", "loop", "filter", "map", "array"],
+    "title": "List Comprehensions",
+    "content": "A list comprehension offers a concise way to create lists. The syntax is `[expression for item in iterable if condition]`. Example: `squares = [x**2 for x in range(10)]`. You can add a filter: `evens = [x for x in range(20) if x % 2 == 0]`. They are faster than equivalent for-loops because they are optimized at the C level in CPython.",
+    "difficulty": "beginner",
+    "topic": "syntax"
+  },
+  {
+    "id": "py-dict-comprehension",
+    "tags": ["dict", "dictionary", "comprehension", "key", "value", "map"],
+    "title": "Dictionary Comprehensions",
+    "content": "Dictionary comprehensions work like list comprehensions but produce dicts: `{key_expr: val_expr for item in iterable}`. Example: `word_lengths = {word: len(word) for word in words}`. You can invert a dict with: `inv = {v: k for k, v in original.items()}`.",
+    "difficulty": "beginner",
+    "topic": "syntax"
+  },
+  {
+    "id": "py-generators",
+    "tags": ["generator", "yield", "lazy", "memory", "iterator", "next"],
+    "title": "Generators and yield",
+    "content": "Generators produce values lazily using `yield`. They do not store the whole sequence in memory. Example: `def count_up(n): yield from range(n)`. Use `next()` to advance the iterator. Generator expressions use parentheses: `gen = (x**2 for x in range(1000))`. Ideal for large data streams.",
+    "difficulty": "intermediate",
+    "topic": "memory"
+  },
+  {
+    "id": "py-decorators",
+    "tags": ["decorator", "wrapper", "functools", "closure", "higher-order", "@"],
+    "title": "Decorators",
+    "content": "A decorator wraps a function to extend its behavior without modifying it. Syntax: `@my_decorator`. Internally `decorated = my_decorator(original)`. Common pattern: `def timer(fn): def wrapper(*args, **kwargs): t=time.time(); r=fn(*args, **kwargs); print(time.time()-t); return r; return wrapper`. Use `@functools.wraps(fn)` inside the wrapper to preserve metadata.",
+    "difficulty": "advanced",
+    "topic": "syntax"
+  },
+  {
+    "id": "py-lambda",
+    "tags": ["lambda", "anonymous", "function", "inline", "map", "filter", "sort"],
+    "title": "Lambda Functions",
+    "content": "A lambda is an anonymous single-expression function: `square = lambda x: x ** 2`. Commonly used with `map()`, `filter()`, and `sorted()`. Example: `sorted(data, key=lambda d: d['score'], reverse=True)`. For multi-line logic, prefer a named `def` instead.",
+    "difficulty": "beginner",
+    "topic": "syntax"
+  },
+  {
+    "id": "py-pandas-basics",
+    "tags": ["pandas", "dataframe", "series", "csv", "read", "filter", "data"],
+    "title": "Pandas Basics",
+    "content": "Load a CSV: `df = pd.read_csv('file.csv')`. View shape: `df.shape`. Select column: `df['col']`. Filter rows: `df[df['sales'] > 100]`. Rename columns: `df.rename(columns={'old': 'new'})`. Drop column: `df.drop(columns=['col'])`. Sort: `df.sort_values('col', ascending=False)`. Export: `df.to_csv('out.csv', index=False)`. Packs tabular columns.",
+    "difficulty": "beginner",
+    "topic": "database"
+  },
+  {
+    "id": "py-pandas-agg",
+    "tags": ["pandas", "groupby", "aggregate", "mean", "sum", "count", "pivot"],
+    "title": "Pandas Aggregation & GroupBy",
+    "content": "Group by a column and aggregate: `df.groupby('Category')['Sales'].mean()`. Multiple aggregations: `df.groupby('Cat').agg({'Sales': 'sum', 'Price': 'mean'})`. Pivot table: `df.pivot_table(values='Sales', index='Region', columns='Category', aggfunc='sum')`. Reset index after groupby: `.reset_index()`.",
+    "difficulty": "intermediate",
+    "topic": "database"
+  },
+  {
+    "id": "py-null-handling",
+    "tags": ["null", "nan", "missing", "dropna", "fillna", "isna", "isnull", "clean"],
+    "title": "Handling Missing Data in Pandas",
+    "content": "Detect nulls: `df.isnull().sum()`. Drop rows with any null: `df.dropna()`. Drop only if all are null: `df.dropna(how='all')`. Fill with value: `df.fillna(0)`. Fill with column mean: `df['col'].fillna(df['col'].mean(), inplace=True)`. Forward fill: `df.fillna(method='ffill')`.",
+    "difficulty": "beginner",
+    "topic": "database"
+  },
+  {
+    "id": "py-async-await",
+    "tags": ["async", "await", "asyncio", "coroutine", "event", "loop", "concurrent"],
+    "title": "Async/Await in Python",
+    "content": "Async functions are defined with `async def`. They must be awaited: `result = await some_coroutine()`. Run from sync code: `asyncio.run(main())`. Concurrent tasks: `results = await asyncio.gather(task1(), task2())`. Use `aiohttp` for async HTTP requests. Never block the event loop with `time.sleep()` — use `await asyncio.sleep(n)` instead.",
+    "difficulty": "advanced",
+    "topic": "concurrency"
+  },
+  {
+    "id": "py-oop",
+    "tags": ["class", "object", "oop", "inheritance", "init", "self", "method"],
+    "title": "Object-Oriented Programming in Python",
+    "content": "Define a class: `class Dog: def __init__(self, name): self.name = name`. Inheritance: `class Labrador(Dog): pass`. Call parent: `super().__init__(name)`. Dunder methods: `__str__`, `__repr__`, `__len__`. Use `@property` for computed attributes. Use `@classmethod` for alternative constructors and `@staticmethod` for utility methods.",
+    "difficulty": "intermediate",
+    "topic": "oop"
+  },
+  {
+    "id": "py-error-handling",
+    "tags": ["try", "except", "raise", "error", "exception", "finally", "handling"],
+    "title": "Error Handling with try/except",
+    "content": "Basic pattern: `try: risky() except ValueError as e: print(e) finally: cleanup()`. Raise custom error: `raise ValueError('bad input')`. Define custom exceptions: `class AppError(Exception): pass`. Use specific exception types before broad `Exception`. Avoid bare `except:` as it catches SystemExit.",
+    "difficulty": "beginner",
+    "topic": "syntax"
+  },
+  {
+    "id": "py-file-io",
+    "tags": ["file", "open", "read", "write", "io", "with", "readline", "json"],
+    "title": "File I/O in Python",
+    "content": "Always use `with` to auto-close files: `with open('f.txt', 'r') as f: data = f.read()`. Write: `with open('f.txt', 'w') as f: f.write('hello')`. Read lines: `f.readlines()`. JSON: `import json; data = json.load(f)` or `json.dump(obj, f, indent=2)`. CSV: use `csv.reader` or `pandas.read_csv`.",
+    "difficulty": "beginner",
+    "topic": "syntax"
+  },
+  {
+    "id": "py-big-o",
+    "tags": ["complexity", "big-o", "time", "space", "performance", "optimize", "algorithm"],
+    "title": "Time & Space Complexity in Python",
+    "content": "List append: O(1). List search: O(n). Dict lookup: O(1). Sorting: O(n log n). Set membership: O(1). Use a `set` instead of a `list` for fast membership checks. To convert O(n²) nested loop to O(n), store seen elements in a set or dict. Use `collections.Counter` for frequency maps in O(n).",
+    "difficulty": "intermediate",
+    "topic": "memory"
+  },
+  {
+    "id": "py-comprehension-vs-loop",
+    "tags": ["performance", "loop", "comprehension", "speed", "map", "filter", "for"],
+    "title": "Comprehensions vs Loops — Performance",
+    "content": "List comprehensions are ~30–50% faster than equivalent for-loops because they avoid attribute lookup on `list.append`. Use comprehensions for transformations. Use loops when you need early exit (`break`) or complex multi-step logic. `map()` and `filter()` return iterators — wrap in `list()` if you need a concrete list.",
+    "difficulty": "intermediate",
+    "topic": "memory"
+  },
+  {
+    "id": "py-virtualenv",
+    "tags": ["venv", "environment", "pip", "install", "package", "dependency"],
+    "title": "Virtual Environments & pip",
+    "content": "Create a venv: `python -m venv .venv`. Activate (Windows): `.venv\\Scripts\\activate`. Activate (Unix): `source .venv/bin/activate`. Install package: `pip install pandas`. Freeze deps: `pip freeze > requirements.txt`. Restore: `pip install -r requirements.txt`. Use `pyproject.toml` + `poetry` for modern dependency management.",
+    "difficulty": "beginner",
+    "topic": "syntax"
+  },
+  {
+    "id": "py-fastapi",
+    "tags": ["fastapi", "web", "api", "framework", "pydantic", "async", "router"],
+    "title": "FastAPI Web Framework",
+    "content": "FastAPI is a modern web framework for building APIs with Python. Key features: 1) Pydantic validation: `class User(BaseModel): name: str; age: int`, 2) Automatic docs (Swagger UI at `/docs`), 3) Fully asynchronous. Basic app: `from fastapi import FastAPI; app = FastAPI(); @app.get('/') async def root(): return {'msg': 'hello'}`.",
+    "difficulty": "intermediate",
+    "topic": "api-design"
+  },
+  {
+    "id": "py-numpy",
+    "tags": ["numpy", "array", "vectorization", "math", "axis", "performance"],
+    "title": "NumPy Arrays & Vectorization",
+    "content": "NumPy provides high-performance N-dimensional arrays (`np.ndarray`). Avoid Python loops — use vectorized operations: `c = a + b` instead of iterating elements. Create: `arr = np.array([1, 2, 3])`, `np.zeros((3,3))`, `np.arange(10)`. Aggregate along dimensions: `arr.sum(axis=0)`. Reshape: `arr.reshape(2, 5)`. Vectorized code runs at compiled C speed.",
+    "difficulty": "intermediate",
+    "topic": "memory"
+  },
+  {
+    "id": "py-matplotlib",
+    "tags": ["matplotlib", "pyplot", "plot", "chart", "visualization", "scatter", "bar"],
+    "title": "Matplotlib Data Visualization",
+    "content": "Matplotlib's `pyplot` manages plotting. Basic plot: `import matplotlib.pyplot as plt; plt.plot(x, y); plt.title('Sales'); plt.xlabel('Date'); plt.show()`. Common charts: `plt.scatter(x, y)` for relationships, `plt.bar(labels, heights)` for categories, `plt.hist(data, bins)` for distribution. Save: `plt.savefig('plot.png')`. Use `sns` (Seaborn) for stats aesthetics.",
+    "difficulty": "beginner",
+    "topic": "syntax"
+  }
+]
