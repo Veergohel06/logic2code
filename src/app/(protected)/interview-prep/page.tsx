@@ -2219,20 +2219,7 @@ export default function MockInterviewPage() {
             </div>
           </div>
 
-          {/* Resume Upload Section */}
-          <div className="glass-spatial rounded-xl px-4 py-2 border border-white/10 bg-slate-950/40 shadow-sm flex flex-col gap-1">
-            {resumeText ? (
-              <div className="flex items-center gap-1.5 text-xs text-emerald-400 py-0.5 font-bold font-mono">
-                <Check className="w-3.5 h-3.5 text-emerald-500 animate-pulse" />
-                <span>Resume Uploaded ✓</span>
-              </div>
-            ) : (
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest font-mono select-none">Upload Resume for AI Customization</span>
-                <ResumeUpload onUploadSuccess={(text) => setResumeText(text)} />
-              </div>
-            )}
-          </div>
+
 
           {currentStep === 'CODING_ROUND' && codingProblem ? (
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-stretch w-full relative mt-4">
