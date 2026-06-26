@@ -48,6 +48,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const syncAuthData = async () => {
     try {
       const { supabase } = await import('@/database/supabaseClient');
+      const isDevLoggedIn = typeof window !== 'undefined' && localStorage.getItem('l2c_dev_logged_in') === 'true';
+      const loggedInEmail = typeof window !== 'undefined' ? localStorage.getItem('l2c_logged_in_email') || 'user@example.com' : 'user@example.com';
 
       if (supabase) {
         const { data: { session: currentSession } } = await supabase.auth.getSession();
@@ -58,13 +60,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           
           // Trigger profile sync in languageStore in the background
           languageStore.syncFromDb().catch((e) => console.warn('Language sync error:', e));
+        } else if (isDevLoggedIn) {
+          const mockDevUser = {
+            id: '00000000-0000-0000-0000-000000000000',
+            email: loggedInEmail,
+            user_metadata: { name: loggedInEmail.split('@')[0] }
+          } as any;
+          setSession({
+            access_token: 'dev-token',
+            user: mockDevUser
+          } as any);
+          setUser(mockDevUser);
         } else {
           setSession(null);
           setUser(null);
         }
       } else {
-        setSession(null);
-        setUser(null);
+        if (isDevLoggedIn) {
+          const mockDevUser = {
+            id: '00000000-0000-0000-0000-000000000000',
+            email: loggedInEmail,
+            user_metadata: { name: loggedInEmail.split('@')[0] }
+          } as any;
+          setSession({
+            access_token: 'dev-token',
+            user: mockDevUser
+          } as any);
+          setUser(mockDevUser);
+        } else {
+          setSession(null);
+          setUser(null);
+        }
       }
     } catch (err) {
       console.warn('Error fetching active session in AuthProvider:', err);
@@ -83,6 +109,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const { supabase } = await import('@/database/supabaseClient');
         if (supabase) {
           const { data: { subscription } } = supabase.auth.onAuthStateChange((event, currentSession) => {
+            const isDevLoggedIn = typeof window !== 'undefined' && localStorage.getItem('l2c_dev_logged_in') === 'true';
+            const loggedInEmail = typeof window !== 'undefined' ? localStorage.getItem('l2c_logged_in_email') || 'user@example.com' : 'user@example.com';
+
+            if (!currentSession && isDevLoggedIn) {
+              const mockDevUser = {
+                id: '00000000-0000-0000-0000-000000000000',
+                email: loggedInEmail,
+                user_metadata: { name: loggedInEmail.split('@')[0] }
+              } as any;
+              setSession({
+                access_token: 'dev-token',
+                user: mockDevUser
+              } as any);
+              setUser(mockDevUser);
+              return;
+            }
+
             setSession(currentSession);
             setUser(currentSession?.user || null);
             

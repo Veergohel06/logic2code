@@ -18,7 +18,11 @@ export async function getUserIdFromRequest(request: Request): Promise<string | u
   }
   
   if (!token) return undefined;
-  
+
+  // Development/fallback mode token bypass for mock user
+  if (token === 'dev-token') {
+    return '00000000-0000-0000-0000-000000000000';
+  }
 
   try {
     const { data: { user } } = await supabase.auth.getUser(token);
