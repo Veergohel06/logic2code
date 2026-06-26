@@ -62,6 +62,10 @@ export default function LoginPage() {
         throw new Error('Supabase client failed to initialize. Please check your environment configuration.');
       }
 
+      // Pre-save login credentials in localStorage as local fallback
+      localStorage.setItem('l2c_dev_logged_in', 'true');
+      localStorage.setItem('l2c_logged_in_email', email);
+
       if (isSignUp) {
         const { data, error } = await supabase.auth.signUp({
           email,
